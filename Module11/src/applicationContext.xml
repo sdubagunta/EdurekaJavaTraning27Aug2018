@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url" value="jdbc:mysql://localhost/edureka" />
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</bean>
+
+
+	<bean id="mysessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+
+
+		<property name="mappingResources">
+
+			<list>
+				<value>employee.hbm.xml </value>
+			</list>
+
+		</property>
+
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				 <prop key="hibernate.cache.use_query_cache">true</prop>
+        		<prop key="hibernate.cache.use_second_level_cache">false</prop>
+        		<prop key = "hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>
+        		<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+        		
+        		
+			</props>
+
+		</property>
+	</bean>
+
+<!--  <bean id="template" class="org.springframework.orm.hibernate5.HibernateTemplate">
+   
+   <property name="checkWriteOperations" value="false"/>
+   <property name="sessionFactory" ref="mysessionFactory"/>  
+</bean> -->
+	<bean id="dao" class="co.edureka.EmployeeDAO">
+		<property name="sessionFactory" ref="mysessionFactory"/>  
+		
+		
+	</bean>
+
+</beans>
